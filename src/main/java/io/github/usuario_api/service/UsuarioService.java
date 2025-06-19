@@ -95,6 +95,17 @@ public class UsuarioService {
         usuario.setSenha(dto.getNovaSenha());
         usuarioRepository.save(usuario);
     }
+    public void deslogar(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getAutenticado()) {
+            throw new RuntimeException("Usuário já está deslogado.");
+        }
+
+        usuario.setAutenticado(false);
+        usuarioRepository.save(usuario);
+    }
 }
 
 

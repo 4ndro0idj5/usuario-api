@@ -56,5 +56,11 @@ public class UsuarioController {
         usuarioService.alterarSenha(id, dto);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}/logout")
+    public ResponseEntity<Void> logout(@PathVariable Long id) {
+        usuarioService.deslogar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 
