@@ -48,5 +48,13 @@ public class UsuarioController {
         UpdateResponseEnderecoDTO response = usuarioService.atualizarEndereco(id, dto);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/senha")
+    public ResponseEntity<Void> alterarSenha(
+            @PathVariable Long id,
+            @RequestBody UsuarioSenhaUpdateDTO dto) {
+        usuarioService.alterarSenha(id, dto);
+        return ResponseEntity.noContent().build();
+    }
 }
 
