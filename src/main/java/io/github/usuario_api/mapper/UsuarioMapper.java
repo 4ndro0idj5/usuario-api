@@ -1,8 +1,6 @@
 package io.github.usuario_api.mapper;
 
-import io.github.usuario_api.dto.LoginResponseDTO;
-import io.github.usuario_api.dto.UsuarioDTO;
-import io.github.usuario_api.dto.UsuarioResponseDTO;
+import io.github.usuario_api.dto.*;
 import io.github.usuario_api.entities.Endereco;
 import io.github.usuario_api.entities.Usuario;
 import org.springframework.stereotype.Component;
@@ -40,6 +38,23 @@ public class UsuarioMapper {
         return LoginResponseDTO.builder()
                 .mensagem("Login realizado com sucesso.")
                 .nome(usuario.getNome())
+                .build();
+    }
+
+    public Usuario fromUpdateDTO(UpdateUsuarioRequestDTO dto){
+        return Usuario.builder()
+                .nome(dto.getNome())
+                .email(dto.getEmail())
+                .telefone(dto.getTelefone())
+                .build();
+    }
+
+    public UpdateUsuarioResponseDTO toUpdateDTO(Usuario usuario){
+        return UpdateUsuarioResponseDTO.builder()
+                .nome(usuario.getNome())
+                .email(usuario.getEmail())
+                .mensagem("Dados do usuário cadastrado com sucesso.")
+                .telefone(usuario.getTelefone())
                 .build();
     }
 }
