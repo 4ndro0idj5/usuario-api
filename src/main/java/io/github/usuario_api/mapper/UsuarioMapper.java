@@ -57,4 +57,15 @@ public class UsuarioMapper {
                 .telefone(usuario.getTelefone())
                 .build();
     }
+
+    public UpdateResponseEnderecoDTO toEnderecoDTO(Endereco endereco){
+        return UpdateResponseEnderecoDTO.builder()
+                .mensagem("Endereço atualizado com sucesso.")
+                .rua(endereco.getRua())
+                .numero(endereco.getNumero())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .cep(endereco.getCep())
+                .build();
+    }
 }

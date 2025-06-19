@@ -40,5 +40,13 @@ public class UsuarioController {
         UpdateUsuarioResponseDTO response = usuarioService.atualizar(id, dto);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/endereco")
+    public ResponseEntity<UpdateResponseEnderecoDTO> atualizarEndereco(
+            @PathVariable Long id,
+            @RequestBody EnderecoDTO dto) {
+        UpdateResponseEnderecoDTO response = usuarioService.atualizarEndereco(id, dto);
+        return ResponseEntity.ok(response);
+    }
 }
 

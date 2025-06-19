@@ -1,6 +1,7 @@
 package io.github.usuario_api.service;
 
 import io.github.usuario_api.dto.*;
+import io.github.usuario_api.entities.Endereco;
 import io.github.usuario_api.entities.Usuario;
 import io.github.usuario_api.mapper.UsuarioMapper;
 import io.github.usuario_api.repository.UsuarioRepository;
@@ -57,6 +58,26 @@ public class UsuarioService {
         Usuario atualizado = usuarioRepository.save(usuario);
 
         return usuarioMapper.toUpdateDTO(atualizado);
+    }
+
+    public UpdateResponseEnderecoDTO atualizarEndereco(Long id, EnderecoDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getAutenticado()) {
+            throw new RuntimeException("Usuário não autenticado. Faça login antes de atualizar o endereço.");
+        }
+
+        Endereco endereco = usuario.getEndereco();
+        endereco.setRua(dto.getRua());
+        endereco.setNumero(dto.getNumero());
+        endereco.setBairro(dto.getBairro());
+        endereco.setCidade(dto.getCidade());
+        endereco.setCep(dto.getCep());
+
+        usuarioRepository.save(usuario);
+
+        return usuarioMapper.toEnderecoDTO(endereco);
     }
 }
 
