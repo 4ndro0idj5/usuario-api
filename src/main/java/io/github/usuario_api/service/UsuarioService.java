@@ -106,6 +106,16 @@ public class UsuarioService {
         usuario.setAutenticado(false);
         usuarioRepository.save(usuario);
     }
+
+    public void deletar(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getAutenticado()) {
+            throw new RuntimeException("Usuário já está deslogado.");
+        }
+        usuarioRepository.delete(usuario);
+    }
 }
 
 

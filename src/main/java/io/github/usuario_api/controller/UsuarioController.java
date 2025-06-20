@@ -62,5 +62,11 @@ public class UsuarioController {
         usuarioService.deslogar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        !qausuarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 
