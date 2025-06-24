@@ -1,9 +1,6 @@
 package io.github.usuario_api.controller;
 
-import io.github.usuario_api.dto.LoginRequestDTO;
-import io.github.usuario_api.dto.LoginResponseDTO;
-import io.github.usuario_api.dto.UsuarioDTO;
-import io.github.usuario_api.dto.UsuarioResponseDTO;
+import io.github.usuario_api.dto.*;
 import io.github.usuario_api.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,22 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> autenticar( @RequestBody LoginRequestDTO dto) {
         LoginResponseDTO response = usuarioService.autenticar(dto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdateUsuarioResponseDTO> atualizarUsuario(
+            @PathVariable Long id,
+            @RequestBody UpdateUsuarioRequestDTO dto) {
+        UpdateUsuarioResponseDTO response = usuarioService.atualizar(id, dto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/endereco")
+    public ResponseEntity<UpdateResponseEnderecoDTO> atualizarEndereco(
+            @PathVariable Long id,
+            @RequestBody EnderecoDTO dto) {
+        UpdateResponseEnderecoDTO response = usuarioService.atualizarEndereco(id, dto);
         return ResponseEntity.ok(response);
     }
 }
