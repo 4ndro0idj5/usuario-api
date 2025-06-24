@@ -2,6 +2,8 @@ package io.github.usuario_api.controller.handlers;
 
 import io.github.usuario_api.dto.ErrorDTO;
 import io.github.usuario_api.dto.ValidationErrorDTO;
+import io.github.usuario_api.exceptions.SenhaInvalidaException;
+import io.github.usuario_api.exceptions.UsuarioNaoEncontradoException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +43,16 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<ErrorDTO> handleUsuarioNaoEncontradoException(UsuarioNaoEncontradoException ex) {
+        ErrorDTO error = new ErrorDTO(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
 
+    @ExceptionHandler(SenhaInvalidaException.class)
+    public ResponseEntity<ErrorDTO> handleSenhaInvalidaException(SenhaInvalidaException ex) {
+        ErrorDTO error = new ErrorDTO(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+
+    }
 }

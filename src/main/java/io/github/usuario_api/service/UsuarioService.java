@@ -5,6 +5,8 @@ import io.github.usuario_api.dto.LoginRequestDTO;
 import io.github.usuario_api.dto.UsuarioDTO;
 import io.github.usuario_api.dto.UsuarioResponseDTO;
 import io.github.usuario_api.entities.Usuario;
+import io.github.usuario_api.exceptions.SenhaInvalidaException;
+import io.github.usuario_api.exceptions.UsuarioNaoEncontradoException;
 import io.github.usuario_api.mapper.UsuarioMapper;
 import io.github.usuario_api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +35,10 @@ public class UsuarioService {
 
     public LoginResponseDTO autenticar(LoginRequestDTO dto) {
         Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com este e-mail"));
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Email não cadastrado."));
 
         if (!usuario.getSenha().equals(dto.getSenha())) {
-            throw new RuntimeException("Senha inválida");
+            throw new SenhaInvalidaException("Senha incorreta.");
         }
 
 
