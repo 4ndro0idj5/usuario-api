@@ -1,5 +1,7 @@
 package io.github.usuario_api.service;
 
+import io.github.usuario_api.dto.LoginResponseDTO;
+import io.github.usuario_api.dto.LoginRequestDTO;
 import io.github.usuario_api.dto.UsuarioDTO;
 import io.github.usuario_api.dto.UsuarioResponseDTO;
 import io.github.usuario_api.entities.Usuario;
@@ -27,6 +29,21 @@ public class UsuarioService {
         return usuarios.stream()
                 .map(usuarioMapper::toDTO)
                 .toList();
+    }
+
+    public LoginResponseDTO autenticar(LoginRequestDTO dto) {
+        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com este e-mail"));
+
+        if (!usuario.getSenha().equals(dto.getSenha())) {
+            throw new RuntimeException("Senha inválida");
+        }
+
+
+        usuario.setAutenticado(true);
+        Usuario logado = usuarioRepository.save(usuario);
+
+        return usuarioMapper.toLoginResponseDTO(logado);
     }
 }
 

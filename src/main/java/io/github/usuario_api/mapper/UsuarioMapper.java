@@ -1,5 +1,6 @@
 package io.github.usuario_api.mapper;
 
+import io.github.usuario_api.dto.LoginResponseDTO;
 import io.github.usuario_api.dto.UsuarioDTO;
 import io.github.usuario_api.dto.UsuarioResponseDTO;
 import io.github.usuario_api.entities.Endereco;
@@ -32,6 +33,13 @@ public class UsuarioMapper {
                 .nome(usuario.getNome())
                 .email(usuario.getEmail())
                 .cpf(usuario.getCpf())
+                .build();
+    }
+
+    public LoginResponseDTO toLoginResponseDTO(Usuario usuario){
+        return LoginResponseDTO.builder()
+                .mensagem("Login realizado com sucesso.")
+                .nome(usuario.getNome())
                 .build();
     }
 }

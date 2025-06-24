@@ -1,5 +1,7 @@
 package io.github.usuario_api.controller;
 
+import io.github.usuario_api.dto.LoginRequestDTO;
+import io.github.usuario_api.dto.LoginResponseDTO;
 import io.github.usuario_api.dto.UsuarioDTO;
 import io.github.usuario_api.dto.UsuarioResponseDTO;
 import io.github.usuario_api.service.UsuarioService;
@@ -27,6 +29,12 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioResponseDTO>> listarUsuarios() {
         List<UsuarioResponseDTO> usuarios = usuarioService.listarUsuarios();
         return ResponseEntity.ok(usuarios);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> autenticar( @RequestBody LoginRequestDTO dto) {
+        LoginResponseDTO response = usuarioService.autenticar(dto);
+        return ResponseEntity.ok(response);
     }
 }
 
