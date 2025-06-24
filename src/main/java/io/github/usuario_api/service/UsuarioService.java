@@ -8,6 +8,8 @@ import io.github.usuario_api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
@@ -19,6 +21,12 @@ public class UsuarioService {
         Usuario usuario = usuarioMapper.fromDTO(dto);
         Usuario salvo = usuarioRepository.save(usuario);
         return usuarioMapper.toDTO(salvo);
+    }
+    public List<UsuarioResponseDTO> listarUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream()
+                .map(usuarioMapper::toDTO)
+                .toList();
     }
 }
 
