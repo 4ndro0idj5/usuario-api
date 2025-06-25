@@ -37,7 +37,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<UpdateUsuarioResponseDTO> atualizarUsuario(
             @PathVariable Long id,
-            @RequestBody UpdateUsuarioRequestDTO dto) {
+            @Valid @RequestBody UpdateUsuarioRequestDTO dto) {
         UpdateUsuarioResponseDTO response = usuarioService.atualizar(id, dto);
         return ResponseEntity.ok(response);
     }
@@ -45,7 +45,7 @@ public class UsuarioController {
     @PutMapping("/{id}/endereco")
     public ResponseEntity<UpdateResponseEnderecoDTO> atualizarEndereco(
             @PathVariable Long id,
-            @RequestBody EnderecoDTO dto) {
+            @Valid @RequestBody EnderecoDTO dto) {
         UpdateResponseEnderecoDTO response = usuarioService.atualizarEndereco(id, dto);
         return ResponseEntity.ok(response);
     }
@@ -53,7 +53,7 @@ public class UsuarioController {
     @PutMapping("/{id}/senha")
     public ResponseEntity<Void> alterarSenha(
             @PathVariable Long id,
-            @RequestBody UsuarioSenhaUpdateDTO dto) {
+            @Valid @RequestBody UsuarioSenhaUpdateDTO dto) {
         usuarioService.alterarSenha(id, dto);
         return ResponseEntity.noContent().build();
     }
