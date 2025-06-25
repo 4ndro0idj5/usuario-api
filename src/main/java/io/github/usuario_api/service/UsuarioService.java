@@ -1,5 +1,7 @@
 package io.github.usuario_api.service;
 
+import io.github.usuario_api.autenticador.UsuarioAutenticadoValidator;
+import io.github.usuario_api.autenticador.UsuarioAutenticador;
 import io.github.usuario_api.dto.*;
 import io.github.usuario_api.entities.Endereco;
 import io.github.usuario_api.entities.Usuario;
@@ -18,6 +20,8 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final UsuarioAutenticador usuarioAutenticador;
+    private final UsuarioAutenticadoValidator usuarioAutenticadoValidator;
 
     public UsuarioResponseDTO cadastrarUsuario(UsuarioDTO dto) {
         Usuario usuario = usuarioMapper.fromDTO(dto);
@@ -32,26 +36,16 @@ public class UsuarioService {
     }
 
     public LoginResponseDTO autenticar(LoginRequestDTO dto) {
-        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new UsuarioNaoEncontradoException("Email não cadastrado."));
 
-        if (!usuario.getSenha().equals(dto.getSenha())) {
-            throw new SenhaInvalidaException("Senha incorreta.");
-        }
+        Usuario usuario = usuarioAutenticador.autenticar(dto.getEmail(), dto.getSenha());
 
-
-        usuario.setAutenticado(true);
         Usuario logado = usuarioRepository.save(usuario);
 
         return usuarioMapper.toLoginResponseDTO(logado);
     }
     public UpdateUsuarioResponseDTO atualizar(Long id, UpdateUsuarioRequestDTO dto) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!usuario.getAutenticado()) {
-            throw new RuntimeException("Usuário não autenticado. Faça login antes de atualizar os dados.");
-        }
+        Usuario usuario = usuarioAutenticadoValidator.validarUsuarioAutenticado(id);
 
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
@@ -63,12 +57,8 @@ public class UsuarioService {
     }
 
     public UpdateResponseEnderecoDTO atualizarEndereco(Long id, EnderecoDTO dto) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!usuario.getAutenticado()) {
-            throw new RuntimeException("Usuário não autenticado. Faça login antes de atualizar o endereço.");
-        }
+        Usuario usuario = usuarioAutenticadoValidator.validarUsuarioAutenticado(id);
 
         Endereco endereco = usuario.getEndereco();
         endereco.setRua(dto.getRua());
@@ -83,12 +73,8 @@ public class UsuarioService {
     }
 
     public void alterarSenha(Long id, UsuarioSenhaUpdateDTO dto) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!usuario.getAutenticado()) {
-            throw new RuntimeException("Usuário não autenticado. Faça login antes de alterar a senha.");
-        }
+        Usuario usuario = usuarioAutenticadoValidator.validarUsuarioAutenticado(id);
 
         if (!usuario.getSenha().equals(dto.getSenhaAtual())) {
             throw new RuntimeException("Senha atual incorreta.");
@@ -98,24 +84,16 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
     public void deslogar(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!usuario.getAutenticado()) {
-            throw new RuntimeException("Usuário já está deslogado.");
-        }
+        Usuario usuario = usuarioAutenticadoValidator.validarUsuarioAutenticado(id);
 
         usuario.setAutenticado(false);
         usuarioRepository.save(usuario);
     }
 
     public void deletar(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!usuario.getAutenticado()) {
-            throw new RuntimeException("Usuário já está deslogado.");
-        }
+        Usuario usuario = usuarioAutenticadoValidator.validarUsuarioAutenticado(id);
         usuarioRepository.delete(usuario);
     }
 }
