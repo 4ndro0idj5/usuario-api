@@ -77,7 +77,7 @@ public class UsuarioService {
         Usuario usuario = usuarioAutenticadoValidator.validarUsuarioAutenticado(id);
 
         if (!usuario.getSenha().equals(dto.getSenhaAtual())) {
-            throw new RuntimeException("Senha atual incorreta.");
+            throw new SenhaInvalidaException("Senha atual incorreta.");
         }
 
         usuario.setSenha(dto.getNovaSenha());
