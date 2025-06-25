@@ -81,6 +81,43 @@ public class UsuarioService {
 
         return usuarioMapper.toEnderecoDTO(endereco);
     }
+
+    public void alterarSenha(Long id, UsuarioSenhaUpdateDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getAutenticado()) {
+            throw new RuntimeException("Usuário não autenticado. Faça login antes de alterar a senha.");
+        }
+
+        if (!usuario.getSenha().equals(dto.getSenhaAtual())) {
+            throw new RuntimeException("Senha atual incorreta.");
+        }
+
+        usuario.setSenha(dto.getNovaSenha());
+        usuarioRepository.save(usuario);
+    }
+    public void deslogar(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getAutenticado()) {
+            throw new RuntimeException("Usuário já está deslogado.");
+        }
+
+        usuario.setAutenticado(false);
+        usuarioRepository.save(usuario);
+    }
+
+    public void deletar(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getAutenticado()) {
+            throw new RuntimeException("Usuário já está deslogado.");
+        }
+        usuarioRepository.delete(usuario);
+    }
 }
 
 

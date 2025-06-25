@@ -49,5 +49,25 @@ public class UsuarioController {
         UpdateResponseEnderecoDTO response = usuarioService.atualizarEndereco(id, dto);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/senha")
+    public ResponseEntity<Void> alterarSenha(
+            @PathVariable Long id,
+            @RequestBody UsuarioSenhaUpdateDTO dto) {
+        usuarioService.alterarSenha(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/logout")
+    public ResponseEntity<Void> logout(@PathVariable Long id) {
+        usuarioService.deslogar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        usuarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 
