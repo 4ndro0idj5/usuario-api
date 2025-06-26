@@ -10,7 +10,9 @@ import io.github.usuario_api.exceptions.UsuarioNaoEncontradoException;
 import io.github.usuario_api.mapper.UsuarioMapper;
 import io.github.usuario_api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,6 +35,15 @@ public class UsuarioService {
         return usuarios.stream()
                 .map(usuarioMapper::toDTO)
                 .toList();
+    }
+
+    public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Usuário não encontrado com ID: " + id
+                ));
+
+        return usuarioMapper.toDTO(usuario);
     }
 
     public LoginResponseDTO autenticar(LoginRequestDTO dto) {
