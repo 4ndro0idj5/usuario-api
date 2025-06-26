@@ -31,6 +31,9 @@ public class UsuarioMapper {
                 .nome(usuario.getNome())
                 .email(usuario.getEmail())
                 .cpf(usuario.getCpf())
+                .id(usuario.getId())
+                .autenticado(usuario.getAutenticado())
+                .perfil(usuario.getPerfil())
                 .build();
     }
 

@@ -69,5 +69,11 @@ public class UsuarioController {
         usuarioService.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id) {
+        UsuarioResponseDTO dto = usuarioService.buscarUsuarioPorId(id);
+        return ResponseEntity.ok(dto);
+    }
 }
 
