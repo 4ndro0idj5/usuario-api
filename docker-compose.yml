@@ -13,7 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data"
 
   usuarios-api:
-    image: 4ndro0idj5/usuarios-api:1
+    image: androidj5/usuarios-api:1
     container_name: usuarios_api
     depends_on:
       - postgres
