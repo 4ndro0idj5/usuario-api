@@ -1,5 +1,6 @@
 package io.github.usuario_api.controller;
 
+import io.github.usuario_api.docs.UsuarioApiDoc;
 import io.github.usuario_api.dto.*;
 import io.github.usuario_api.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -13,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/usuarios")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class UsuarioController implements UsuarioApiDoc {
 
     private final UsuarioService usuarioService;
 
